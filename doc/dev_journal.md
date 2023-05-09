@@ -9,6 +9,7 @@ Suggested steps of our kernel module:
 1. Search the /dev/input/ directory and figrue out which devices correspond to the keyboard.
 2. Check who is reading from that file.
 3. Somehow figure out what reading is malicious and which not (?!).
+
 Possible flow if it is clearly a user program:
 1. On Start, search Keyboard file as above.
 2. Start monitoring who has it open.
