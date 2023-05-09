@@ -26,7 +26,21 @@ For either path this cannot be the final functionality. It is unclear what is an
 5. Would it be possible to expose kernel datastructures to userface without comprimising security?
 6. Maybe the app/module is only to be run once as a scan, then one removes the malicous software component, and then returns the OS to a safe state without leakage to user space...
 7. Do this questions assume the right underlying model of the linux kernel?
-...? more certainly ...
+
+...more ? certainly ...
 #### TODOs:
 1. Install both keyloggers in a VM and see how their functionality works, and how we would detect them  using system programs. This especially applies to the user space keylogger.
 2. Really need to figure out where the effect of kernel module would be seen. If its just logging to a logfile then it's basically as good as a user space program and a system admin could find it. 
+#### On what goes into the report
+0. Abstract
+1. Introduction
+2. What is a keylogger
+	1. The essential differences of malware in userspace vs embedded into the kernel
+3. How do you detect keyloggers
+	1. Fundamental difficulties
+	2. addressing the difficulties
+4. A possible, very constrained solution
+5. Bibliography
+6. Resources
+#### Misc
+What is the essential problem? We need to define what problem to solve more precisely and figure out what the essential complexities are. My current understanding is that detecting a keylogger embedded in the kernel is a fundamentally different task than detecting a keylogger that lives in user space (even with root priviledges). 
