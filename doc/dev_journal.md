@@ -48,15 +48,19 @@ What is the essential problem? We need to define what problem to solve more prec
 ## Wednesday, 10.05.2023
 ### Sebastian 
 Tested [simple-key-logger](https://github.com/gsingh93/simple-key-logger/tree/master). The following steps get me from getting device file name of keyboard to PID kapturing keystrokes and associated binary executable:
-1. ls -la /dev/ipnut/by-path | grep kbd -> ../event2
-2. fuser /dev/input/event2 -> 1 880 1774 6327
-3. ls -l /proc/{1, 880, 1774, 63277}/exe -> gnome-shell, systemd, systemd-logind AND /home/kldetect/simple-key-logger/skeylogger
+1. `ls -la /dev/ipnut/by-path | grep kbd` -> ../event2
+2. `fuser /dev/input/event2` -> 1 880 1774 6327
+3. `ls -l /proc/{1, 880, 1774, 63277}/exe` -> gnome-shell, systemd, systemd-logind AND /home/kldetect/simple-key-logger/skeylogger
 So this keylogger can easily be found since only 3 other processes wherer reading from the kbd input file. Replicating on my host reveal that it would be similarly easy to snuff out their, as the only processes reading from my keyboard where gnome-shell, systemd and systemd-logind.
 
 Attempting to install [keylogger](https://github.com/arunpn123/keylogger). It fails saying: 
-'''
+```
 make: PWD: No such file or directory
 make -C /lib/modules/6.0.7-301.fc37.x86_64/build M= modules
 make[1]: *** /lib/modules/6.0.7-301.fc37.x86_64/build: No such file or directory.  Stop.
 make: *** [Makefile:4: all] Error 2
-'''
+```
+[This](https://github.com/jarun/spy) named 'spy' could be installed after installing dkms with `make -f Makefile.dkms`. Then `$ sudo insmod kisni.ko`.
+Then `sudo cat /sys/kernel/debug/kisni/keys` will show keys that have been pressed.
+
+
