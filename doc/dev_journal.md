@@ -60,7 +60,13 @@ make -C /lib/modules/6.0.7-301.fc37.x86_64/build M= modules
 make[1]: *** /lib/modules/6.0.7-301.fc37.x86_64/build: No such file or directory.  Stop.
 make: *** [Makefile:4: all] Error 2
 ```
-[This](https://github.com/jarun/spy) named 'spy' could be installed after installing dkms with `make -f Makefile.dkms`. Then `$ sudo insmod kisni.ko`.
+[This](https://github.com/jarun/spy) keylogger named 'spy' could be installed after installing dkms with `make -f Makefile.dkms`. Then `$ sudo insmod kisni.ko`.
 Then `sudo cat /sys/kernel/debug/kisni/keys` will show keys that have been pressed.
+
+After installing some updates and restarting the machine in the VM (Fedora 37) (it updated the kernel) [this](https://github.com/arunpn123/keylogger) was installable but some time after inserting it into kernel the VM freezes. Could replicate a second time. 
+It seems after restart kernel modules must be reinserted (even though spy was inserted using dkms).
+#### Next Steps:
+1. Test some more user space keyloggers and see if it is truly basicallly always very easy to detect them.
+2. Figrue out how to detect kernel module kerlogger w/o just scanning for suspiciously named logfiles.
 
 
