@@ -73,6 +73,12 @@ It seems after restart kernel modules must be reinserted (even though spy was in
 ### Sebastian
 Talked to Dr. Eleliemy. Now have the following plan for the project:
 Two parts: One User Space detector that can more or less aggressivly kill uknown processes reading from I/O files. Should be configurable how aggressive it treats found loggers. From Just informing the user to auto SIGINT KILL, for instance. The Second part of thew Software checks kernel modules and probably just notifies user. There should be some db where we have Kernel Modules known to use I/O, so kind of a list of "Trusted I/O Drivers/Modules". 
+Here's an overview of the steps in the part of the programm that detects programm that have event files open which are not standard processes:
+1. Use the `opendir()` function to open the directory `/dev/input/by-path/` and iterate over its contents using `readdir()`.
+For each file in the directory, use the `strstr()` function to check if the file name contains "kbd" or "keyboard".
+2. For each file that contain "kbd" or "keyboard", use readlink() to read the symbolic link, and get the device file that is mapped to it.
+3. For each directory in `/proc/` check if the name is a numeric value and whenever it is, open `/proc/[PID]/fd/` and go over context with `readdir()`. If any of the filnames in there correspond to the ones found in step 2, it is a process that has a kbd device file open.
+4. *TODO: FINNISH*
 
 #### Next Step:
 1. Learn how kernel modules read I/O and how it is detectable.
