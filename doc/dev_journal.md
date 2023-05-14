@@ -69,4 +69,13 @@ It seems after restart kernel modules must be reinserted (even though spy was in
 1. Test some more user space keyloggers and see if it is truly basicallly always very easy to detect them.
 2. Figrue out how to detect kernel module kerlogger w/o just scanning for suspiciously named logfiles.
 
+## Sunday, 14.05.23
+### Sebastian
+Talked to Dr. Eleliemy. Now have the following plan for the project:
+Two parts: One User Space detector that can more or less aggressivly kill uknown processes reading from I/O files. Should be configurable how aggressive it treats found loggers. From Just informing the user to auto SIGINT KILL, for instance. The Second part of thew Software checks kernel modules and probably just notifies user. There should be some db where we have Kernel Modules known to use I/O, so kind of a list of "Trusted I/O Drivers/Modules". 
+
+#### Next Step:
+1. Learn how kernel modules read I/O and how it is detectable.
+2. Start coding the user space detector part of the software.
+
 
