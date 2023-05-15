@@ -69,6 +69,10 @@ It seems after restart kernel modules must be reinserted (even though spy was in
 1. Test some more user space keyloggers and see if it is truly basicallly always very easy to detect them.
 2. Figrue out how to detect kernel module kerlogger w/o just scanning for suspiciously named logfiles.
 
+## Thursday, 11.05.2023
+### Michel
+I was able to recreate all the steps Sebastian did on wednesday 10.05.2023. The only difference was, that on a ubuntu VM, the third step ls -l /proc/{1, 880, 1774, 63277}/exe` has to be executed a little bit differently. I wasnt able to give out a list of all processes at once. I had to check each PID individually, to see which PID belongs to which process.
+
 ## Sunday, 14.05.23
 ### Sebastian
 Talked to Dr. Eleliemy. Now have the following plan for the project:
@@ -83,5 +87,6 @@ For each file in the directory, use the `strstr()` function to check if the file
 #### Next Step:
 1. Learn how kernel modules read I/O and how it is detectable.
 2. Start coding the user space detector part of the software.
+
 
 
