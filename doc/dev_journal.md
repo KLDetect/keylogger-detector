@@ -84,6 +84,13 @@ For each file in the directory, use the `strstr()` function to check if the file
 3. For each directory in `/proc/` check if the name is a numeric value and whenever it is, open `/proc/[PID]/fd/` and go over context with `readdir()`. If any of the filnames in there correspond to the ones found in step 2, it is a process that has a kbd device file open.
 4. *TODO: FINNISH*
 
+## Friday, 19.05.23
+### Michel
+`lsmod shows most loaded kernel modules and who and how many use it at the moment.
+I/O Module responsible for keyboard drivers is not fully listed with `lsmod`. With `ll /lib/modules/5.19.0-35-generic/kernel/drivers/input/keyboard`one can list all drivers connected in some way to the Keyboard.
+I tried `hwinfo to list all hardware on a device. To use it one needs to do `sudo apt install hwinfo`. With `hwinfo --short` one gets a short information list about devices and drivers / what they are. Further investigation is required.
+TODO: Find a way to list all processes using those keyboard Kernel Modules
+
 #### Next Step:
 1. Learn how kernel modules read I/O and how it is detectable.
 2. Start coding the user space detector part of the software.
