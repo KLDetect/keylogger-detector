@@ -69,13 +69,31 @@ It seems after restart kernel modules must be reinserted (even though spy was in
 1. Test some more user space keyloggers and see if it is truly basicallly always very easy to detect them.
 2. Figrue out how to detect kernel module kerlogger w/o just scanning for suspiciously named logfiles.
 
+## Thursday, 11.05.2023
+### Michel
+I was able to recreate all the steps Sebastian did on wednesday 10.05.2023. The only difference was, that on a ubuntu VM, the third step ls -l /proc/{1, 880, 1774, 63277}/exe` has to be executed a little bit differently. I wasnt able to give out a list of all processes at once. I had to check each PID individually, to see which PID belongs to which process.
+
 ## Sunday, 14.05.23
 ### Sebastian
 Talked to Dr. Eleliemy. Now have the following plan for the project:
 Two parts: One User Space detector that can more or less aggressivly kill uknown processes reading from I/O files. Should be configurable how aggressive it treats found loggers. From Just informing the user to auto SIGINT KILL, for instance. The Second part of thew Software checks kernel modules and probably just notifies user. There should be some db where we have Kernel Modules known to use I/O, so kind of a list of "Trusted I/O Drivers/Modules". 
+Here's an overview of the steps in the part of the programm that detects programm that have event files open which are not standard processes:
+1. Use the `opendir()` function to open the directory `/dev/input/by-path/` and iterate over its contents using `readdir()`.
+For each file in the directory, use the `strstr()` function to check if the file name contains "kbd" or "keyboard".
+2. For each file that contain "kbd" or "keyboard", use readlink() to read the symbolic link, and get the device file that is mapped to it.
+3. For each directory in `/proc/` check if the name is a numeric value and whenever it is, open `/proc/[PID]/fd/` and go over context with `readdir()`. If any of the filnames in there correspond to the ones found in step 2, it is a process that has a kbd device file open.
+4. *TODO: FINNISH*
+
+## Friday, 19.05.23
+### Michel
+`lsmod shows most loaded kernel modules and who and how many use it at the moment.
+I/O Module responsible for keyboard drivers is not fully listed with `lsmod`. With `ll /lib/modules/5.19.0-35-generic/kernel/drivers/input/keyboard`one can list all drivers connected in some way to the Keyboard.
+I tried `hwinfo to list all hardware on a device. To use it one needs to do `sudo apt install hwinfo`. With `hwinfo --short` one gets a short information list about devices and drivers / what they are. Further investigation is required.
+TODO: Find a way to list all processes using those keyboard Kernel Modules
 
 #### Next Step:
 1. Learn how kernel modules read I/O and how it is detectable.
 2. Start coding the user space detector part of the software.
+
 
 
