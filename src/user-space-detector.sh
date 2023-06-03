@@ -51,7 +51,7 @@ done < "$pids_input_file"
 # sort and remove duplicates
 sorted_pids=$(printf '%s\n' "${pids_array[@]}" | sort -nu)
 
-# write unique pids to file, separated by newlines
+# write unique and sorted pids to file, separated by newlines
 printf '%s\n' "${sorted_pids[@]}" > "$pids_output_file"
 
 echo "Pids written to $pids_output_file"
