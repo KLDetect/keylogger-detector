@@ -71,7 +71,7 @@ It seems after restart kernel modules must be reinserted (even though spy was in
 
 ## Thursday, 11.05.2023
 ### Michel
-I was able to recreate all the steps Sebastian did on wednesday 10.05.2023. The only difference was, that on a ubuntu VM, the third step ls -l /proc/{1, 880, 1774, 63277}/exe` has to be executed a little bit differently. I wasnt able to give out a list of all processes at once. I had to check each PID individually, to see which PID belongs to which process.
+I was able to recreate all the steps Sebastian did on wednesday 10.05.2023. The only difference was, that on a ubuntu VM, the third step `ls -l /proc/{1, 880, 1774, 63277}/exe` has to be executed a little bit differently. I wasnt able to give out a list of all processes at once. I had to check each PID individually, to see which PID belongs to which process.
 
 ## Sunday, 14.05.23
 ### Sebastian
@@ -88,7 +88,7 @@ For each file in the directory, use the `strstr()` function to check if the file
 ### Michel
 `lsmod shows most loaded kernel modules and who and how many use it at the moment.
 I/O Module responsible for keyboard drivers is not fully listed with `lsmod`. With `ll /lib/modules/5.19.0-35-generic/kernel/drivers/input/keyboard`one can list all drivers connected in some way to the Keyboard.
-I tried `hwinfo to list all hardware on a device. To use it one needs to do `sudo apt install hwinfo`. With `hwinfo --short` one gets a short information list about devices and drivers / what they are. Further investigation is required.
+I tried `hwinfo` to list all hardware on a device. To use it one needs to do `sudo apt install hwinfo`. With `hwinfo --short` one gets a short information list about devices and drivers / what they are. Further investigation is required.
 TODO: Find a way to list all processes using those keyboard Kernel Modules
 
 #### Next Step:
@@ -96,4 +96,10 @@ TODO: Find a way to list all processes using those keyboard Kernel Modules
 2. Start coding the user space detector part of the software.
 
 
-
+## Saturday, 3. June 2023
+Instead of using c now used bash to make a script that
+1. finds `/dev/input/event*` that correspond to keyboard files and writes them in a file.
+2. checks which pids use those files and writes those into a file.
+3. checks to which programms/executables the pids correspond to.
+Still need to finnish it.
+TODO: Add functionality that is asks user if the malicious process should be killed. I.e. add some configuration functionality.
