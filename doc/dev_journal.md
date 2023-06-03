@@ -104,4 +104,4 @@ Instead of using c now used bash to make a script that
 3. checks to which programms/executables the pids correspond to.
 Still need to finnish it.
 
-_TODO_: Add functionality that is asks user if the malicious process should be killed. I.e. add some configuration functionality.
+_TODO_: Add functionality that is asks user if the malicious process should be killed. I.e. add some configuration functionality. Finnish Step 3. in mentioned bash script.
