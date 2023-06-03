@@ -97,6 +97,7 @@ TODO: Find a way to list all processes using those keyboard Kernel Modules
 
 
 ## Saturday, 3. June 2023
+### Sebastian
 Instead of using c now used bash to make a script that
 1. finds `/dev/input/event*` that correspond to keyboard files and writes them in a file.
 2. checks which pids use those files and writes those into a file.
