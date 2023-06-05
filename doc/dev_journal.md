@@ -86,7 +86,7 @@ For each file in the directory, use the `strstr()` function to check if the file
 
 ## Friday, 19.05.23
 ### Michel
-`lsmod shows most loaded kernel modules and who and how many use it at the moment.
+`lsmod` shows most loaded kernel modules and who and how many use it at the moment.
 I/O Module responsible for keyboard drivers is not fully listed with `lsmod`. With `ll /lib/modules/5.19.0-35-generic/kernel/drivers/input/keyboard`one can list all drivers connected in some way to the Keyboard.
 I tried `hwinfo` to list all hardware on a device. To use it one needs to do `sudo apt install hwinfo`. With `hwinfo --short` one gets a short information list about devices and drivers / what they are. Further investigation is required.
 TODO: Find a way to list all processes using those keyboard Kernel Modules
@@ -97,9 +97,15 @@ TODO: Find a way to list all processes using those keyboard Kernel Modules
 
 
 ## Saturday, 3. June 2023
+### Sebastian
 Instead of using c now used bash to make a script that
 1. finds `/dev/input/event*` that correspond to keyboard files and writes them in a file.
 2. checks which pids use those files and writes those into a file.
 3. checks to which programms/executables the pids correspond to.
 Still need to finnish it.
-TODO: Add functionality that is asks user if the malicious process should be killed. I.e. add some configuration functionality.
+
+_TODO_: Add functionality that is asks user if the malicious process should be killed. I.e. add some configuration functionality. Finnish Step 3. in mentioned bash script.
+
+## Monday, 5. June 2023
+### Michel
+Systemtap allowes one to write stap scripts and compile them as kernel modules. Linetimes.stp is usefull to filter functioncalls. With some slight modification (needs some more research) we could use it to filter all modules that perform the "register_keyboard_notifier" function inside of the kernel. Currently, it only lists events that happen durring probing. So the 'spy' keylogger has to be loaded as a kernel module for it to show up whilst monitoring. One could compile the systemtap script as a kernel module and load it very early on boot. That also would require some more research. Detecting the "register_keyboard_notifier" function call does not seem efficient.
