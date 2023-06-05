@@ -105,3 +105,7 @@ Instead of using c now used bash to make a script that
 Still need to finnish it.
 
 _TODO_: Add functionality that is asks user if the malicious process should be killed. I.e. add some configuration functionality. Finnish Step 3. in mentioned bash script.
+
+## Monday, 5. June 2023
+### Michel
+Systemtap allowes one to write stap scripts and compile them as kernel modules. Linetimes.stp is usefull to filter functioncalls. With some slight modification (needs some more research) we could use it to filter all modules that perform the "register_keyboard_notifier" function inside of the kernel. Currently, it only lists events that happen durring probing. So the 'spy' keylogger has to be loaded as a kernel module for it to show up whilst monitoring. One could compile the systemtap script as a kernel module and load it very early on boot. That also would require some more research. Detecting the "register_keyboard_notifier" function call does not seem efficient.
