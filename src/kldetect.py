@@ -148,6 +148,8 @@ def confirm_kill_programs(programs, times=0):
 
 # kill list of processes
 def kill_processes(pids):
+    print(pids) ## DEBUG
+    print("Killing processes with pids:", pids)
     for pid in pids:
         os.kill(pid, signal.SIGKILL)
         if verbose_option:
