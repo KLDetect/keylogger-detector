@@ -218,7 +218,8 @@ def detect_keyloggers():
                     
 
     to_kill = list(set(to_kill))
-    auto_kill_programs = list(set(auto_kill_programs)).append(to_kill)
+    auto_kill_programs = list(set(auto_kill_programs))
+    auto_kill_programs.extend(to_kill)
     config['auto_kill_programs'] = auto_kill_programs
     white_listed_programs = list(set(white_listed_programs))
     config['white_listed_programs'] = white_listed_programs
