@@ -13,37 +13,6 @@ auto_kill_option = False
 verbose_option = False
 safe_option = False
 
-
-# Load Configurations
-def load_config():
-
-    config = {}
-
-    # Check if file exists
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, 'r') as file:
-                config = json.load(file)
-        except:
-            print("[-] Error: Failed to load config file")
-    else:
-        config = {
-            'white_listed_programs': [],
-            'auto_kill_programs': [],
-            'kbd_names': ['kbd']
-        }
-        save_config(config)  # Save the default configuration
-
-    return config
-
-# Save new configurations to json file
-def save_config(config):
-    try:
-        with open(CONFIG_FILE, 'w') as file:
-            json.dump(config, file)
-    except IOError as e:
-        print(f"[-] Error! Failed to save config file: {e}")
-
 # Check if the user is in sudo mode
 def check_sudo():
     if os.geteuid() != 0:
