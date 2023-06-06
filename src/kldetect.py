@@ -6,15 +6,13 @@ import sys # for exiting
 import signal # for killing processes
 
 
-# 
-white_listed_programs_file = 'white_listed_programs.txt'
-auto_kill_programs_file = 'auto_kill_programs.txt'
-kbd_names_file = 'kbd_names.txt'
+white_listed_programs_file = 'config/white_listed_programs.txt'
+auto_kill_programs_file = 'config/auto_kill_programs.txt'
+kbd_names_file = 'config/kbd_names.txt'
 auto_kill_option = False
 verbose_option = False
 safe_option = False
 kbd_names = ['kbd']
-fuser_option = "-s" # -s for silent, -v for verbose
 
 # Check if the user is in sudo mode
 def check_sudo():
@@ -63,12 +61,12 @@ def print_list_to_file(list, file):
 # find pids using file using fuser
 def get_pids(file):
     try:
-        pids = subprocess.check_output(['fuser',fuser_option, file]).decode('utf-8').split()
+        pids = subprocess.check_output(['fuser', file]).decode('utf-8').split()
     except subprocess.CalledProcessError:
         if verbose_option:
             print("[-] Error: fuser failed to run on", file)
         return []
-    pids = [int(pid) for pid in pids]
+    #pids = [int(pid) for pid in pids]
     return pids
 
 # clear a file
