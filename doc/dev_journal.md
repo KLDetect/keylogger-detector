@@ -120,6 +120,11 @@ Test in VM and finnishing touches to smooth things out.
 Did a first test in a Fedora 37 VM. At first it didn't work. Then I tested it on my normal machine and it also stopped working. It turned out that it was just not getting the root priviledges right, even tho it passed the root check. Testing on the VM was then succesfull in that it found the pids. Killing the process wasn't succesfull and will need further testing and fixes.
 #### TODO:
 1. Fix the bug where the killing of the process doesn't work.
-2. Build config files, maybe check if there is a better way to to do configs than with .txt files.
+~~2. Build config files, maybe check if there is a better way to to do configs than with .txt files.~~ (finnished 6.06.23)
 3. Keep testing. Goal is that if run as '''$ sudo ./kldetect.py -v''' one is prompted to kill the keylogger, and then rerunning the programm would give the output '''[+] No suspicious programms found'''
-4. Note to self: Problem with killing is that not using pids-program dict to choose which program to kill. 
+~~4. Note to self: Problem with killing is that not using pids-program dict to choose which program to kill.~~ 
+#### Later that same say
+Configuration is now done with json to keep it all central.
+Test with json configuration works. 
+Killing a process still doesn't work:
+''' TypeError: 'str' object cannot be interpreted as integer '''

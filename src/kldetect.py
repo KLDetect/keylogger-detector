@@ -201,7 +201,7 @@ def detect_keyloggers():
     # Get program names
     for pid in pids:
         program_name = get_program_name(pid)
-        program_pid_dict[program_name] = pid
+        program_pid_dict[program_name] = int(pid)
         if auto_kill_option and program_name in auto_kill_programs:
             os.kill(pid, signal.SIGKILL)
             if verbose_option:
