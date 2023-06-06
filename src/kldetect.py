@@ -4,15 +4,45 @@ import os # for going directories
 import subprocess # for running commands, in particular fuser
 import sys # for exiting
 import signal # for killing processes
+import json # for handling our configurations
+
+CONFIG_FILE = 'config.json'
 
 
-white_listed_programs_file = 'config/white_listed_programs.txt'
-auto_kill_programs_file = 'config/auto_kill_programs.txt'
-kbd_names_file = 'config/kbd_names.txt'
 auto_kill_option = False
 verbose_option = False
 safe_option = False
-kbd_names = ['kbd']
+
+
+# Load Configurations
+def load_config():
+
+    config = {}
+
+    # Check if file exists
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, 'r') as file:
+                config = json.load(file)
+        except:
+            print("[-] Error: Failed to load config file")
+    else:
+        config = {
+            'white_listed_programs': [],
+            'auto_kill_programs': [],
+            'kbd_names': ['kbd']
+        }
+        save_config(config)  # Save the default configuration
+
+    return config
+
+# Save new configurations to json file
+def save_config(config):
+    try:
+        with open(CONFIG_FILE, 'w') as file:
+            json.dump(config, file)
+    except IOError as e:
+        print(f"[-] Error! Failed to save config file: {e}")
 
 # Check if the user is in sudo mode
 def check_sudo():
@@ -44,7 +74,7 @@ def get_real_path(path):
         return path
 
 # get keyboard device files
-def get_keyboard_device_files():
+def get_keyboard_device_files(kbd_names):
     keyboard_device_files = []
     for root, dirs, files in os.walk('/dev/input/by-path'):
         for file in files:
@@ -88,6 +118,7 @@ def get_program_name(pid):
 def set_input_arguments():
     global auto_kill_option
     global verbose_option
+    global safe_option
     if len(sys.argv) > 1:
         if '-a' in sys.argv:
             auto_kill_option = True
@@ -96,16 +127,7 @@ def set_input_arguments():
         if '-s' in sys.argv:
             safe_option = True
 
-# initialize kbd_names based on input file
-def initialize_kbd_names():
-    global kbd_names
-    try:
-        with open(kbd_names_file, 'r') as f:
-            for line in f:
-                kbd_names.append(line.strip())
-    except:
-        pass # default is kbd_names=['kbd'] as set at the top
-                             
+                            
 # ask user to confirm a list of programs to kill
 def confirm_kill_programs(programs, times=0):
     print("Confirm to kill the following programs:")
@@ -138,14 +160,32 @@ def detect_keyloggers():
     ###############################
     check_sudo()
     check_packages()
+    config = load_config()
+    # initialize white_listed_programs
+    if 'white_listed_programs' in config:
+        white_listed_programs = config['white_listed_programs']
+    else:
+        config['white_listed_programs'] = []
+        white_listed_programs = []
+    # initialize auto_kill_programs
+    if 'auto_kill_programs' in config:
+        auto_kill_programs = config['auto_kill_programs']
+    else:
+        config['auto_kill_programs'] = []
+        auto_kill_programs = []
+    # initialize kbd_names
+    if 'kbd_names' in config:
+        kbd_names = config['kbd_names']
+    else:
+        config['kbd_names'] = []
+        kbd_names = []
+    # Set options
     set_input_arguments()
+
     ###############################
     # Step 1: Get keyboard device files
     ###############################
-    keyboard_device_files = get_keyboard_device_files()
-    clear_file('keyboard_device_files.txt')
-    print_list_to_file(keyboard_device_files, 'keyboard_device_files.txt')
-
+    keyboard_device_files = get_keyboard_device_files(kbd_names)
     ###############################
     # Step 2: Get pids using keyboard device files
     ###############################
@@ -153,33 +193,11 @@ def detect_keyloggers():
     for file in keyboard_device_files:
         pids += get_pids(file)
     pids = sorted(list(set(pids)))
-    clear_file('pids.txt')
-    print_list_to_file(pids, 'pids.txt')
-
     ###############################
     # Step 3: Get program names using pids
     ###############################
     program_names = []
     program_pid_dict = {}
-    auto_kill_programs = []
-    white_listed_programs = []
-
-    # Get white listed programs
-    try:
-        with open(white_listed_programs_file, 'r') as f:
-            for line in f:
-                white_listed_programs.append(line.strip())
-    except:
-            pass    
-        
-    # Get auto kill programs
-    try:
-        with open(auto_kill_programs_file, 'r') as f:
-            for line in f:
-                auto_kill_programs.append(line.strip())
-    except:
-            pass
-
     # Get program names
     for pid in pids:
         program_name = get_program_name(pid)
@@ -229,7 +247,7 @@ def detect_keyloggers():
     print("Suspicious programs:")
     for program_name in suspicious_programs:
         print(program_name)
-    user_input = input("Please enter any program/ that should be kept from running. Use the whitespace(spacebar) to separate values.") 
+    user_input = input("Please enter those programs you want to kill. Use the whitespace(spacebar) to separate values.") 
     if user_input == '':
         print("[-] No programs to kill")
         sys.exit(0)
@@ -239,12 +257,22 @@ def detect_keyloggers():
     pids_to_kill = []
     for program_name in programs_to_kill:
         pids_to_kill.append(program_pid_dict[program_name])
+        auto_kill_programs.append(program_name)
     
     if safe_option:
         if confirm_kill_programs(programs_to_kill):
             kill_processes(pids_to_kill)
     else:
         kill_processes(pids_to_kill)
+    
+    ###############################
+    # Step 5: Save config
+    ###############################
+    config['auto_kill_programs'] = auto_kill_programs
+    config['white_listed_programs'] = white_listed_programs
+    config['kbd_names'] = kbd_names
+    save_config(config)
+
 
 if __name__ == "__main__":
     detect_keyloggers()
