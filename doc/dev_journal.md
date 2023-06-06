@@ -128,3 +128,38 @@ Configuration is now done with json to keep it all central.
 Test with json configuration works. 
 Killing a process still doesn't work:
 ''' TypeError: 'str' object cannot be interpreted as integer '''
+## Wednesday, 7. June 2023
+### Sebastian
+This is the latest output aftert a test run where actually 3 processes has keyloggers runnig.
+'''
+[kldetect@fedora src]$ sudo ./keylogger_detector.py 
+[sudo] password for kldetect: 
+/usr/sbin/fuser
+/usr/bin/which
+[+] No suspicious processes found
+[kldetect@fedora src]$ sudo ./keylogger_detector.py 
+/usr/sbin/fuser
+/usr/bin/which
+[+] No suspicious processes found
+[kldetect@fedora src]$ cat config.
+cat: config.: No such file or directory
+[kldetect@fedora src]$ cat config.json 
+{"white_listed_programs": ["systemd", "gnome-shell"], "auto_kill_programs": ["skeylogger", "skeylogger", "skeylogger", "skeylogger", "skeylogger"], "kbd_names": ["kbd"]}[kldetect@fedora src]$ sudo ./keylogger_detector.py -v
+[Verbose] Input options set
+[Verbose] Root access checked
+/usr/sbin/fuser
+/usr/bin/which
+[Verbose] Packages checked
+[Verbose] Config file loaded
+[Verbose] Config file parsed
+[Verbose] Keyboard device files found: []
+[Verbose] Process IDs using keyboard device files: []
+[Verbose] Process names using keyboard device files: []
+[Verbose] Suspicious processes found: []
+[Verbose] Suspicious processes not killed: []
+[Verbose] Suspicious processes killed: []
+[+] No suspicious processes found
+'''
+This is after extensivly refactoring because I was starting to loose oversight over the code. So I split it up into utils, config and keylogger_detector.
+#### TODO:
+1. Ivestigate and bug fix
