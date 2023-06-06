@@ -46,7 +46,7 @@ def get_keyboard_device_files(names):
     keyboard_device_files = []
     for root, dirs, files in os.walk('/dev/input/by-path'):
         for file in files:
-            if any(name in files for name in names):
+            if any(name in file for name in names):
                 keyboard_device_files.append(get_real_path(os.path.join(root, file)))
     return keyboard_device_files
 
