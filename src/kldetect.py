@@ -203,7 +203,7 @@ def detect_keyloggers():
     # Get program names
     for pid in pids:
         program_name = get_program_name(pid)
-        program_pid_dict[program_name] = int(pid)
+        program_pid_dict[program_name] = program_pid_dict[program_name].append(int(pid))
         if auto_kill_option and program_name in auto_kill_programs:
             os.kill(pid, signal.SIGKILL)
             if verbose_option:
@@ -270,9 +270,9 @@ def detect_keyloggers():
     ###############################
     # Step 5: Save config
     ###############################
-    config['auto_kill_programs'] = auto_kill_programs
-    config['white_listed_programs'] = white_listed_programs
-    config['kbd_names'] = kbd_names
+    config['auto_kill_programs'] = list(set(auto_kill_programs))
+    config['white_listed_programs'] = list(set(white_listed_programs))
+    config['kbd_names'] = list(set(kbd_names))
     save_config(config)
 
 
