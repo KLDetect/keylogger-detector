@@ -109,3 +109,9 @@ _TODO_: Add functionality that is asks user if the malicious process should be k
 ## Monday, 5. June 2023
 ### Michel
 Systemtap allowes one to write stap scripts and compile them as kernel modules. Linetimes.stp is usefull to filter functioncalls. With some slight modification (needs some more research) we could use it to filter all modules that perform the "register_keyboard_notifier" function inside of the kernel. Currently, it only lists events that happen durring probing. So the 'spy' keylogger has to be loaded as a kernel module for it to show up whilst monitoring. One could compile the systemtap script as a kernel module and load it very early on boot. That also would require some more research. Detecting the "register_keyboard_notifier" function call does not seem efficient.
+
+### Sebastian
+Ported the bash script for user space detection to python for easier string and list handling. Also finnished the main functionality: The script finds processes listening to the device input files and uses blacklists, autokill lists and whitelists to decide which ones to kill. It then asks the users which programs that it couldn't resolve by itself should be killed.
+
+#### TODO:
+Test in VM and finnishing touches to smooth things out.
