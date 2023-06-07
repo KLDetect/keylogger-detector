@@ -131,7 +131,7 @@ Killing a process still doesn't work:
 ## Wednesday, 7. June 2023, night
 ### Sebastian
 This is the latest output aftert a test run where actually 3 processes has keyloggers runnig.
-'''
+```
 [kldetect@fedora src]$ sudo ./keylogger_detector.py 
 [sudo] password for kldetect: 
 /usr/sbin/fuser
@@ -159,7 +159,7 @@ cat: config.: No such file or directory
 [Verbose] Suspicious processes not killed: []
 [Verbose] Suspicious processes killed: []
 [+] No suspicious processes found
-'''
+```
 This is after extensivly refactoring because I was starting to loose oversight over the code. So I split it up into utils, config and keylogger_detector.
 #### TODO:
 1. Ivestigate and bug fix
