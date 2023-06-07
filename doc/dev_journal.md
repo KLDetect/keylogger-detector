@@ -128,7 +128,7 @@ Configuration is now done with json to keep it all central.
 Test with json configuration works. 
 Killing a process still doesn't work:
 ''' TypeError: 'str' object cannot be interpreted as integer '''
-## Wednesday, 7. June 2023
+## Wednesday, 7. June 2023, night
 ### Sebastian
 This is the latest output aftert a test run where actually 3 processes has keyloggers runnig.
 '''
@@ -163,3 +163,13 @@ cat: config.: No such file or directory
 This is after extensivly refactoring because I was starting to loose oversight over the code. So I split it up into utils, config and keylogger_detector.
 #### TODO:
 1. Ivestigate and bug fix
+## Wednesday, 7. June 2023, day
+### Sebastian
+VirtualBox stopped working so after much pain I decided to switch to Boxes. There the install of Fedora 37 went smoothly.
+Then Started testing the userland detector on [simple-key-logger](https://github.com/gsingh93/simple-key-logger/tree/maste), [logkeys](https://github.com/kernc/logkeys).
+[pykeylogger](https://github.com/amoffat/pykeylogger) produced a segmentation fault, after I finaly got it to run. Trying to run [py-keylogger](https://github.com/hiamandeep/py-keylogger), turns out it only runs on X11 it seem (so we'd not catch it anyway).
+[keylog](https://github.com/SCOTPAUL/keylog) was succesfully detected and removed.
+All in all, the main functionality works as intended. Basically now would be the refinement phase to add more options or to have a way to configure the config.json file more easily.
+#### TODO
+1. Write report
+2. Add functionality to userspace detector
