@@ -190,7 +190,7 @@ def detect_keyloggers():
     ############################
     suspicious_processes = []
     for name in process_names:
-        if name not in white_listed_programs and name not in auto_kill_programs:
+        if name not in white_listed_programs and (name not in auto_kill_programs and not auto_kill_option):
             suspicious_processes.append(name)
     if verbose_option:
         print('[Verbose] Suspicious processes found:', suspicious_processes)
