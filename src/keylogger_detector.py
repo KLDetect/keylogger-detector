@@ -179,9 +179,9 @@ def detect_keyloggers():
                     print('[Verbose] Auto-killable process found:', name)
                 if safe_option:
                     if confirm_kill_procces(name):
-                        kill_process(name_pid_dict[name])
+                        kill_processes(name_pid_dict[name])
                 else:
-                    kill_process(name_pid_dict[name])
+                    kill_processes(name_pid_dict[name])
 
     ############################
     # 6. Identify suspicious processes, i.e. those not whitelisted
