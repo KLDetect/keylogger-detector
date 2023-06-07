@@ -49,7 +49,7 @@ def set_input_options():
     """
 
     global auto_kill_option, verbose_option, safe_option, add_white_list_option
-    global debug_option
+    global debug_option, add_black_list_option
     if len(sys.argv) > 1:
         for arg in sys.argv[1:]:
             print(arg)
