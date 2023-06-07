@@ -116,10 +116,10 @@ def kill_process(pid):
     Kill single process.
 
     Args:
-        pid (): Process ID of process to kill # TODO: check if pid is int
+        pid (str): Process ID of process to kill
     """
     try:
-        os.kill(pid, signal.SIGKILL)
+        os.kill(str(pid), signal.SIGKILL) # pid apparently arrives as string
     except ProcessLookupError:
         print("[-] Process {} not found.".format(pid))
 
