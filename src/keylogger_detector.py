@@ -13,7 +13,7 @@ from utils import (
     kill_process
     )
 
-# Global variables
+# Global variables/CLI options
 
 auto_kill_option = False
 verbose_option = False
@@ -260,13 +260,15 @@ def detect_keyloggers():
 
     to_kill = list(set(to_kill))
 
-    if black_list_option:
+    if add_black_list_option:
         auto_kill_programs.extend(to_kill)
+        if verbose_option:
+            print('[Verbose] Newly blacklisted programs: ', to_kill)
 
-###########################
+    ###########################
     # 9. Cleanup
     ###########################
-        auto_kill_programs = list(set(auto_kill_programs))
+    auto_kill_programs = list(set(auto_kill_programs))
     config['auto_kill_programs'] = auto_kill_programs
     white_listed_programs = list(set(white_listed_programs))
     config['white_listed_programs'] = white_listed_programs
