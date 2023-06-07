@@ -13,37 +13,6 @@ auto_kill_option = False
 verbose_option = False
 safe_option = False
 
-
-# Load Configurations
-def load_config():
-
-    config = {}
-
-    # Check if file exists
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, 'r') as file:
-                config = json.load(file)
-        except:
-            print("[-] Error: Failed to load config file")
-    else:
-        config = {
-            'white_listed_programs': [],
-            'auto_kill_programs': [],
-            'kbd_names': ['kbd']
-        }
-        save_config(config)  # Save the default configuration
-
-    return config
-
-# Save new configurations to json file
-def save_config(config):
-    try:
-        with open(CONFIG_FILE, 'w') as file:
-            json.dump(config, file)
-    except IOError as e:
-        print(f"[-] Error! Failed to save config file: {e}")
-
 # Check if the user is in sudo mode
 def check_sudo():
     if os.geteuid() != 0:
@@ -148,6 +117,8 @@ def confirm_kill_programs(programs, times=0):
 
 # kill list of processes
 def kill_processes(pids):
+    print(pids) ## DEBUG
+    print("Killing processes with pids:", pids)
     for pid in pids:
         os.kill(pid, signal.SIGKILL)
         if verbose_option:
@@ -201,7 +172,7 @@ def detect_keyloggers():
     # Get program names
     for pid in pids:
         program_name = get_program_name(pid)
-        program_pid_dict[program_name] = pid
+        program_pid_dict[program_name] = program_pid_dict[program_name].append(int(pid))
         if auto_kill_option and program_name in auto_kill_programs:
             os.kill(pid, signal.SIGKILL)
             if verbose_option:
@@ -268,9 +239,9 @@ def detect_keyloggers():
     ###############################
     # Step 5: Save config
     ###############################
-    config['auto_kill_programs'] = auto_kill_programs
-    config['white_listed_programs'] = white_listed_programs
-    config['kbd_names'] = kbd_names
+    config['auto_kill_programs'] = list(set(auto_kill_programs))
+    config['white_listed_programs'] = list(set(white_listed_programs))
+    config['kbd_names'] = list(set(kbd_names))
     save_config(config)
 
 

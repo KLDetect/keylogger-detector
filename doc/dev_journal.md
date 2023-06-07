@@ -120,6 +120,56 @@ Test in VM and finnishing touches to smooth things out.
 Did a first test in a Fedora 37 VM. At first it didn't work. Then I tested it on my normal machine and it also stopped working. It turned out that it was just not getting the root priviledges right, even tho it passed the root check. Testing on the VM was then succesfull in that it found the pids. Killing the process wasn't succesfull and will need further testing and fixes.
 #### TODO:
 1. Fix the bug where the killing of the process doesn't work.
-2. Build config files, maybe check if there is a better way to to do configs than with .txt files.
+~~2. Build config files, maybe check if there is a better way to to do configs than with .txt files.~~ (finnished 6.06.23)
 3. Keep testing. Goal is that if run as '''$ sudo ./kldetect.py -v''' one is prompted to kill the keylogger, and then rerunning the programm would give the output '''[+] No suspicious programms found'''
-4. Note to self: Problem with killing is that not using pids-program dict to choose which program to kill. 
+~~4. Note to self: Problem with killing is that not using pids-program dict to choose which program to kill.~~ 
+#### Later that same say
+Configuration is now done with json to keep it all central.
+Test with json configuration works. 
+Killing a process still doesn't work:
+''' TypeError: 'str' object cannot be interpreted as integer '''
+## Wednesday, 7. June 2023, night
+### Sebastian
+This is the latest output aftert a test run where actually 3 processes has keyloggers runnig.
+'''
+[kldetect@fedora src]$ sudo ./keylogger_detector.py 
+[sudo] password for kldetect: 
+/usr/sbin/fuser
+/usr/bin/which
+[+] No suspicious processes found
+[kldetect@fedora src]$ sudo ./keylogger_detector.py 
+/usr/sbin/fuser
+/usr/bin/which
+[+] No suspicious processes found
+[kldetect@fedora src]$ cat config.
+cat: config.: No such file or directory
+[kldetect@fedora src]$ cat config.json 
+{"white_listed_programs": ["systemd", "gnome-shell"], "auto_kill_programs": ["skeylogger", "skeylogger", "skeylogger", "skeylogger", "skeylogger"], "kbd_names": ["kbd"]}[kldetect@fedora src]$ sudo ./keylogger_detector.py -v
+[Verbose] Input options set
+[Verbose] Root access checked
+/usr/sbin/fuser
+/usr/bin/which
+[Verbose] Packages checked
+[Verbose] Config file loaded
+[Verbose] Config file parsed
+[Verbose] Keyboard device files found: []
+[Verbose] Process IDs using keyboard device files: []
+[Verbose] Process names using keyboard device files: []
+[Verbose] Suspicious processes found: []
+[Verbose] Suspicious processes not killed: []
+[Verbose] Suspicious processes killed: []
+[+] No suspicious processes found
+'''
+This is after extensivly refactoring because I was starting to loose oversight over the code. So I split it up into utils, config and keylogger_detector.
+#### TODO:
+1. Ivestigate and bug fix
+## Wednesday, 7. June 2023, day
+### Sebastian
+VirtualBox stopped working so after much pain I decided to switch to Boxes. There the install of Fedora 37 went smoothly.
+Then Started testing the userland detector on [simple-key-logger](https://github.com/gsingh93/simple-key-logger/tree/maste), [logkeys](https://github.com/kernc/logkeys).
+[pykeylogger](https://github.com/amoffat/pykeylogger) produced a segmentation fault, after I finaly got it to run. Trying to run [py-keylogger](https://github.com/hiamandeep/py-keylogger), turns out it only runs on X11 it seem (so we'd not catch it anyway).
+[keylog](https://github.com/SCOTPAUL/keylog) was succesfully detected and removed.
+All in all, the main functionality works as intended. Basically now would be the refinement phase to add more options or to have a way to configure the config.json file more easily.
+#### TODO
+1. Write report
+2. Add functionality to userspace detector
