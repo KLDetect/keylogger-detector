@@ -225,6 +225,8 @@ def detect_keyloggers():
         for name in to_kill:
             for pid in name_pid_dict[name]:
                 if confirm_kill_procces(name):
+                    debug(debug_option, 'Killing process: ' + name)
+                    debug(debug_option, 'type(id): ' + str(type(id)))
                     kill_process(id)
                     if verbose_option:
                         print('[Verbose] Process killed:', name)
