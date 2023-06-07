@@ -1,1 +1,11 @@
-{"white_listed_programs": ["systemd", "gnome-shell"], "auto_kill_programs": [], "kbd_names": ["kbd"]}
+{
+    "white_listed_programs": [
+        "systemd",
+        "gnome-shell",
+        "systemd_logind"
+    ],
+    "auto_kill_programs": [],
+    "kbd_names": [
+        "kbd"
+    ]
+}

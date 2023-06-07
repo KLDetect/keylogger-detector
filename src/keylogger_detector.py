@@ -17,16 +17,23 @@ from utils import (
 auto_kill_option = False
 verbose_option = False
 safe_option = False
+add_white_list_option = False
+debug_option = False
 
 # Functions
+def debug(option, to_print):
+    if option:
+        print('[Debug]', to_print)
 
 def print_help():
     print('Usage: python3 keylogger_detector.py [OPTIONS]')
     print('Options:')
     print('  -h, --help\t\t\tPrint this help message')
-    print('  -v, --verbose\t\t\tVerbose mode. Will cause additional information to be printed during execution')
+    print('  -v, --verbose\t\t\tVerbose mode. Informative information will be displayed duting execution')
     print('  -a, --auto-kill\t\tAutomatically kill blacklisted processes')
     print('  -s, --safe\t\t\tSafe mode. Asked to confirm before killing a process')
+    print('  -w, --add-white-list\t\t\tActivate prompt to add program names to the whitelist') #For some reason this line gets messed up in display
+    print('  -d, --debug\t\t\tDebug mode. Print debug statements')
 
 def set_input_options():
     """
@@ -38,9 +45,11 @@ def set_input_options():
         SystemExit: If -h or --help is passed as an argument, the help message is printed and the program exits
     """
 
-    global auto_kill_option, verbose_option, safe_option
+    global auto_kill_option, verbose_option, safe_option, add_white_list_option
+    global debug_option
     if len(sys.argv) > 1:
         for arg in sys.argv[1:]:
+            print(arg)
             if arg == '-h' or arg == '--help':
                 print_help()
                 sys.exit(0)
@@ -50,6 +59,10 @@ def set_input_options():
                 auto_kill_option = True
             elif arg == '-s' or arg == '--safe':
                 safe_option = True
+            elif arg == '-w' or arg == '--add-white-list' :
+                add_white_list_option = True
+            elif arg == '-d' or arg == '--debug':
+                debug_option = True
    
 
 def confirm_kill_procces(process_name, times=0):
@@ -73,7 +86,7 @@ def confirm_kill_procces(process_name, times=0):
         sys.exit(1)
     if times > 0:
         print('Invalid input. Please enter y or n.')
-    print(f'Do you want to kill {process_name}? (y/n)')
+    print('Do you want to kill {}? (y/n)'.format(process_name))
     answer = input()
     if answer == 'y':
         return True
@@ -94,6 +107,7 @@ def detect_keyloggers():
     ############################
     # 1. Setup and initialization
     ############################   
+    debug(True, str(sys.argv)) # Set manually to debug if args are being read
     global auto_kill_option, verbose_option, safe_option
     global CONFIG_FILE
     set_input_options()
@@ -118,6 +132,8 @@ def detect_keyloggers():
     if verbose_option:
         print('[Verbose] Config file parsed')
 
+    debug(debug_option, 'Whitelist option: ' + str(add_white_list_option))
+    debug(debug_option, 'Vebose option: ' + str(verbose_option))
     ############################
     # 2. Get device files mapped to keyboard
     ############################
@@ -143,7 +159,7 @@ def detect_keyloggers():
     for pid in pids:
         name = get_process_name(pid)
         process_names.append(name)
-        name_pid_dict[name].add(pid)
+        name_pid_dict.setdefault(name, []).append(pid) 
     process_names = sorted(list(set(process_names)))
     if verbose_option:
         print('[Verbose] Process names using keyboard device files:', process_names)
@@ -188,20 +204,22 @@ def detect_keyloggers():
     print('[-]The following suspicious processes were found:')
     for name in suspicious_processes:
         print(f'\t{name}')
+    
+    if safe_option:
+        print('[Safe] You are in safe mode. In safe mode you will be asked to confirm each kill.')
+        print('[Safe] Please be aware that killing an important process may cause your system to crash.')
+
     print('Please enter the names of the processes to kill, separated by a space.')
     print('To not kill any just hit enter.')
-    if safe_option:
-        print('[Info] You are in safe mode. In safe mode you will be asked to confirm each kill.')
-    else:
-        print('[Info] Please be aware that killing an important process may cause your system to crash.')
 
     to_kill = input().split()
     if len(to_kill) == 0:
-        print('[+] No processes killed.')
-        sys.exit(0)
+        print('[+] No processes to kill.')
 
     if verbose_option:
         print('[Verbose] Processes to kill:', to_kill)
+
+    # If the safe_option is set, prompt the user to confirm each kill
     if safe_option:
         for name in to_kill:
             for pid in name_pid_dict[name]:
@@ -217,6 +235,23 @@ def detect_keyloggers():
                     print('[Verbose] Process killed:', name)
                     
 
+    ############################
+    # 8. Update whitelist if option set
+    ############################
+    debug(debug_option, 'Whitelist option:' + str(add_white_list_option))
+    if add_white_list_option:
+        print('Please type the names of any process to whitelist, separated by a spcace.')
+        to_whitelist = input().split()
+        if len(to_whitelist) == 0 and verbose_option:
+            print('[Verbose] No processes chosen to whitelist.')
+        else: 
+            white_listed_programs += to_whitelist
+            if verbose_option:
+                print('[Verbose] Newly whitelisted programs: ', to_whitelist)
+
+    ###########################
+    # 9. Cleanup
+    ###########################
     to_kill = list(set(to_kill))
     auto_kill_programs = list(set(auto_kill_programs))
     auto_kill_programs.extend(to_kill)
@@ -225,9 +260,11 @@ def detect_keyloggers():
     config['white_listed_programs'] = white_listed_programs
     kbd_names = list(set(kbd_names))
     config['kbd_names'] = kbd_names
-    save_config(config, CONFIG_FILE)
+    save_config(config)
     if verbose_option:
         print('[Verbose] Config file saved')
+    
+    print('[+] Program completed. Exiting.')
 
 if __name__ == '__main__':
     detect_keyloggers()
