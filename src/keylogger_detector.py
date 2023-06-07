@@ -130,8 +130,8 @@ def detect_keyloggers():
     ############################
     pids = []
     for device_file in keyboard_device_files:
-        pids.append(get_pids_using_file(device_file))
-    pids = sorted(list(set(int(pid) for pid in pids)))
+        pids += get_pids_using_file(device_file)
+    pids = sorted(list(set(pids)))
     if verbose_option:
         print('[Verbose] Process IDs using keyboard device files:', pids)
 
