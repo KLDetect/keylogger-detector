@@ -9,7 +9,8 @@ from utils import (
     get_real_path,
     get_pids_using_file,
     get_process_name,
-    kill_processes
+    kill_processes,
+    kill_process
     )
 
 # Global variables
