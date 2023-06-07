@@ -173,3 +173,8 @@ All in all, the main functionality works as intended. Basically now would be the
 #### TODO
 1. Write report
 2. Add functionality to userspace detector
+
+## Wednesday, 7, June 2023
+### Michel
+
+I have written 2 systemtap scripts, that can detect, whenever a module registers at the Keyboard-notifier. The Script can currently detect whenever a module registers. However, neither of them can detect which kernel module registered. Here comes Sebastians idea of writing a python script, that can unload all un-known modules and loads them back in, whilst the stap-script is running. Whenever a module is loaded in, and it triggers the stap-script, we know it is tracking key-strokes. Those modules will be shown to the user and the user then has to decide whether to unload and remove them, or keep them. 
