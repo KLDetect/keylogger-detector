@@ -19,6 +19,7 @@ auto_kill_option = False
 verbose_option = False
 safe_option = False
 add_white_list_option = False
+add_black_list_option = False
 debug_option = False
 
 # Functions
@@ -33,7 +34,8 @@ def print_help():
     print('  -v, --verbose\t\t\tVerbose mode. Informative information will be displayed duting execution')
     print('  -a, --auto-kill\t\tAutomatically kill blacklisted processes')
     print('  -s, --safe\t\t\tSafe mode. Asked to confirm before killing a process')
-    print('  -w, --add-white-list\t\t\tActivate prompt to add program names to the whitelist') #For some reason this line gets messed up in display
+    print('  -w, --add-white-list\t\t\tActivate prompt to add program names to the whitelist') #For some reason this line gets messed up in display 
+    print('  -b, --add-black-list\t\t\tAutomatically add program names chosen to kill to the blacklist')
     print('  -d, --debug\t\t\tDebug mode. Print debug statements')
 
 def set_input_options():
@@ -62,6 +64,8 @@ def set_input_options():
                 safe_option = True
             elif arg == '-w' or arg == '--add-white-list' :
                 add_white_list_option = True
+            elif arg == '-b' or arg == '--add-black-list':
+                add_black_list_option = True
             elif arg == '-d' or arg == '--debug':
                 debug_option = True
    
@@ -241,7 +245,7 @@ def detect_keyloggers():
                     
 
     ############################
-    # 8. Update whitelist if option set
+    # 8. Update whitelist and/or blacklist if options set
     ############################
     debug(debug_option, 'Whitelist option:' + str(add_white_list_option))
     if add_white_list_option:
@@ -254,12 +258,15 @@ def detect_keyloggers():
             if verbose_option:
                 print('[Verbose] Newly whitelisted programs: ', to_whitelist)
 
-    ###########################
+    to_kill = list(set(to_kill))
+
+    if black_list_option:
+        auto_kill_programs.extend(to_kill)
+
+###########################
     # 9. Cleanup
     ###########################
-    to_kill = list(set(to_kill))
-    auto_kill_programs = list(set(auto_kill_programs))
-    auto_kill_programs.extend(to_kill)
+        auto_kill_programs = list(set(auto_kill_programs))
     config['auto_kill_programs'] = auto_kill_programs
     white_listed_programs = list(set(white_listed_programs))
     config['white_listed_programs'] = white_listed_programs
