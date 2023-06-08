@@ -3,6 +3,20 @@ import subprocess # for executing shell commands
 import signal # for sending signals to processes
 import sys # for exit
 
+
+
+
+def check_platform():
+    """
+    Check if platform is Linux.
+
+    Raises:
+        SystemExit: If the platform isn not LInux.
+    """
+    if sys.platform != 'linux':
+        print("[-] This script only works on Linux.")
+
+
 def check_root():
     """
     Check if script is run as root(sudo).

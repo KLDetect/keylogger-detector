@@ -3,6 +3,7 @@
 import sys
 from config import CONFIG_FILE, load_config, save_config
 from utils import (
+    check_platform,
     check_root,
     check_packages,
     get_keyboard_device_files,
@@ -113,8 +114,9 @@ def detect_keyloggers():
     # 1. Setup and initialization
     ############################   
     debug(True, str(sys.argv)) # Set manually to debug if args are being read
+    check_platform()
+
     global auto_kill_option, verbose_option, safe_option
-    global CONFIG_FILE
     set_input_options()
     if verbose_option:
         print('[Verbose] Input options set')
