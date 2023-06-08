@@ -1,0 +1,68 @@
+Module                  Size  Used by
+tls                   147456  0
+uinput                 20480  0
+isofs                  65536  1
+snd_seq_dummy          16384  0
+snd_hrtimer            16384  1
+vboxvideo              36864  0
+drm_vram_helper        24576  1 vboxvideo
+nf_conntrack_netbios_ns    16384  1
+nf_conntrack_broadcast    16384  1 nf_conntrack_netbios_ns
+nft_fib_inet           16384  1
+nft_fib_ipv4           16384  1 nft_fib_inet
+nft_fib_ipv6           16384  1 nft_fib_inet
+nft_fib                16384  3 nft_fib_ipv6,nft_fib_ipv4,nft_fib_inet
+nft_reject_inet        16384  6
+nf_reject_ipv4         16384  1 nft_reject_inet
+nf_reject_ipv6         24576  1 nft_reject_inet
+nft_reject             16384  1 nft_reject_inet
+nft_ct                 24576  16
+nft_chain_nat          16384  3
+nf_nat                 65536  1 nft_chain_nat
+nf_conntrack          192512  4 nf_nat,nft_ct,nf_conntrack_netbios_ns,nf_conntrack_broadcast
+nf_defrag_ipv6         24576  1 nf_conntrack
+nf_defrag_ipv4         16384  1 nf_conntrack
+ip_set                 65536  0
+rfkill                 40960  3
+nf_tables             352256  237 nft_ct,nft_reject_inet,nft_fib_ipv6,nft_fib_ipv4,nft_chain_nat,nft_reject,nft_fib,nft_fib_inet
+nfnetlink              20480  3 nf_tables,ip_set
+qrtr                   57344  4
+snd_intel8x0           57344  2
+snd_ac97_codec        200704  1 snd_intel8x0
+ac97_bus               16384  1 snd_ac97_codec
+snd_seq               106496  7 snd_seq_dummy
+intel_rapl_msr         20480  0
+snd_seq_device         16384  1 snd_seq
+intel_rapl_common      36864  1 intel_rapl_msr
+snd_pcm               184320  2 snd_intel8x0,snd_ac97_codec
+snd_timer              53248  3 snd_seq,snd_hrtimer,snd_pcm
+sunrpc                815104  1
+rapl                   24576  0
+binfmt_misc            28672  1
+snd                   143360  12 snd_seq,snd_seq_device,snd_intel8x0,snd_timer,snd_ac97_codec,snd_pcm
+joydev                 28672  0
+pcspkr                 16384  0
+soundcore              16384  1 snd
+i2c_piix4              36864  0
+vboxguest              53248  6
+loop                   40960  0
+zram                   32768  2
+crct10dif_pclmul       16384  1
+crc32_pclmul           16384  0
+crc32c_intel           24576  3
+polyval_generic        16384  0
+video                  73728  0
+ghash_clmulni_intel    16384  0
+vmwgfx                458752  2
+drm_ttm_helper         16384  3 vmwgfx,drm_vram_helper,vboxvideo
+wmi                    45056  1 video
+sha512_ssse3           49152  0
+e1000                 188416  0
+serio_raw              20480  0
+ttm                   102400  3 vmwgfx,drm_vram_helper,drm_ttm_helper
+ata_generic            16384  0
+pata_acpi              16384  0
+ip6_tables             40960  0
+ip_tables              40960  0
+fuse                  212992  5
+

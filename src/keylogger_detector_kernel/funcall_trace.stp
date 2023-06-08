@@ -1,0 +1,6 @@
+
+probe kernel.function("register_keyboard_notifier").call
+	{
+		printf("triggered\n")
+	}
+
