@@ -13,7 +13,7 @@ from utils import (
     kill_processes,
     kill_process
     )
-from kernel_detector import run_kernel_detection
+from kernel_detector import *
 
 # Global variables/CLI options
 
