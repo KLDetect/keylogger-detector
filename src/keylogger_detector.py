@@ -211,7 +211,8 @@ def detect_keyloggers():
     ############################
     if len(suspicious_processes) == 0:
         print("[+] No suspicious processes found")
-        sys.exit(0)
+        if not kenrel_detection_option:
+            exit(0)
 
     ############################
     # 7. Prompt user to chose which processes (not covered by auto kill if set) to kill
