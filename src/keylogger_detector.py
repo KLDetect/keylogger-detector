@@ -13,6 +13,7 @@ from utils import (
     kill_processes,
     kill_process
     )
+from kernel_detector import run_kernel_detection
 
 # Global variables/CLI options
 
@@ -22,6 +23,8 @@ safe_option = False
 add_white_list_option = False
 add_black_list_option = False
 debug_option = False
+kernel_detection_option = False
+
 
 # Functions
 def debug(option, to_print):
@@ -38,6 +41,7 @@ def print_help():
     print('  -w, --add-white-list\t\t\tActivate prompt to add program names to the whitelist') #For some reason this line gets messed up in display 
     print('  -b, --add-black-list\t\t\tAutomatically add program names chosen to kill to the blacklist')
     print('  -d, --debug\t\t\tDebug mode. Print debug statements')
+    print(' -k, --kernel-detection\t\t\tRun the kernel keylogger detector, too')
 
 def set_input_options():
     """
@@ -69,6 +73,8 @@ def set_input_options():
                 add_black_list_option = True
             elif arg == '-d' or arg == '--debug':
                 debug_option = True
+            elif arg == '-k' or arg == '--kernel-detection':
+                kernel_detection_option = True
    
 
 def confirm_kill_procces(process_name, times=0):
@@ -286,6 +292,9 @@ def detect_keyloggers():
 
 if __name__ == '__main__':
     detect_keyloggers()
+    if kernel_detection_option:
+        print("[Info] Starting kernel detection")
+        run_kernel_detection()
 
 
 
