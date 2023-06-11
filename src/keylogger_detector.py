@@ -122,7 +122,7 @@ def detect_keyloggers():
     debug(True, str(sys.argv)) # Set manually to debug if args are being read
     check_platform()
 
-    global auto_kill_option, verbose_option, safe_option
+    global auto_kill_option, verbose_option, safe_option, add_white_list_option, kernel_detection_option, debug_option
     set_input_options()
     if verbose_option:
         print('[Verbose] Input options set')
@@ -290,13 +290,14 @@ def detect_keyloggers():
     
     print('[+] Program completed. Exiting.')
 
-if __name__ == '__main__':
-    global kernel_detection_option
-    detect_keyloggers()
     if kernel_detection_option:
-        print("[Info] Starting kernel detection")
-        run_kernel_detection()
+            print("[Info] Starting kernel detection")
+            run_kernel_detection()
 
+
+if __name__ == '__main__':
+    detect_keyloggers()
+    
 
 
 
