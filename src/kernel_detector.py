@@ -136,7 +136,7 @@ def detect_logger(module):
 #
 #==============================================================================================================
 
-def run_kernel_detection:
+def run_kernel_detection():
 	whitelist = get_whitelist("whitelist.txt")
 
 	lsmod_output = list_modules("lsmod");
