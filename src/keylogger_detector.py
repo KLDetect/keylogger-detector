@@ -291,6 +291,7 @@ def detect_keyloggers():
     print('[+] Program completed. Exiting.')
 
 if __name__ == '__main__':
+    global kernel_detection_option
     detect_keyloggers()
     if kernel_detection_option:
         print("[Info] Starting kernel detection")
