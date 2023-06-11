@@ -211,7 +211,7 @@ def detect_keyloggers():
     ############################
     if len(suspicious_processes) == 0:
         print("[+] No suspicious processes found")
-        if not kenrel_detection_option:
+        if not kernel_detection_option:
             exit(0)
 
     ############################
