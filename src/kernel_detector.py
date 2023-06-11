@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import subprocess
 import time
 import multiprocessing
@@ -136,43 +138,42 @@ def detect_logger(module):
 #
 #==============================================================================================================
 
-def run_kernel_detection():
-	whitelist = get_whitelist("whitelist.txt")
+whitelist = get_whitelist("whitelist.txt")
 
-	lsmod_output = list_modules("lsmod");
+lsmod_output = list_modules("lsmod");
 
-	sus_modules = compare_mods(whitelist, lsmod_output)
+sus_modules = compare_mods(whitelist, lsmod_output)
 
-	sus_modules = tidy_up(sus_modules)
+sus_modules = tidy_up(sus_modules)
 
-	sus_modules = unload_mod(sus_modules)
-	time.sleep(1)
+sus_modules = unload_mod(sus_modules)
+time.sleep(1)
 
-	sus_modules = getpath(sus_modules)
-	print(sus_modules)
-	if len(sus_modules) == 0:
-		print("nothing to do")
-		print("ALL CLEAN")
-		
-	
-	
-	suspects = []
-	for module in sus_modules:
-		suspects.append(detect_logger(module))
-		time.sleep(1)
+sus_modules = getpath(sus_modules)
+print(sus_modules)
+if len(sus_modules) == 0:
+    print("nothing to do")
+    print("ALL CLEAN")
+    
 
 
+suspects = []
+for module in sus_modules:
+    suspects.append(detect_logger(module))
+    time.sleep(1)
 
-	print("Following modules are logging your keystrokes: ")
-	for i in range(len(suspects)):
-		print( f"[{i}] {suspects[i]}")
-	print("Enter the number of the module you want to remove: ")
-	user_input = input().split()
-	for j in user_input:
-		to_remove = suspects[int(j)]
-		subprocess.Popen(['sudo','rmmod', to_remove])
-		print(f"Removed {to_remove}")
-	print("Finished")
+
+
+print("Following modules are logging your keystrokes: ")
+for i in range(len(suspects)):
+    print( f"[{i}] {suspects[i]}")
+print("Enter the number of the module you want to remove: ")
+user_input = input().split()
+for j in user_input:
+    to_remove = suspects[int(j)]
+    subprocess.Popen(['sudo','rmmod', to_remove])
+    print(f"Removed {to_remove}")
+print("Finished")
 	
 	
 

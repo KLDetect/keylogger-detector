@@ -41,7 +41,7 @@ def print_help():
     print('  -w, --add-white-list\t\t\tActivate prompt to add program names to the whitelist') #For some reason this line gets messed up in display 
     print('  -b, --add-black-list\t\t\tAutomatically add program names chosen to kill to the blacklist')
     print('  -d, --debug\t\t\tDebug mode. Print debug statements')
-    print(' -k, --kernel-detection\t\t\tRun the kernel keylogger detector, too')
+    print(' -k, --kernel-detection\t\t\tRun the kernel keylogger detector, too. CURRENTLY NOT IMPLEMENTED TO DIRECTLY RUN KERNEL DETECTOR.')
 
 def set_input_options():
     """
@@ -294,10 +294,7 @@ def detect_keyloggers():
 
     debug(debug_option, 'Kernel detection option: ' + str(kernel_detection_option))
 
-    if kernel_detection_option:
-            print("[Info] Starting kernel detection")
-            run_kernel_detection()
-
+;
 
 if __name__ == '__main__':
     detect_keyloggers()
