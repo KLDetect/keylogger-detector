@@ -153,7 +153,7 @@ def run_kernel_detection:
 	if len(sus_modules) == 0:
 		print("nothing to do")
 		print("ALL CLEAN")
-		exit()
+		
 	
 	
 	suspects = []
