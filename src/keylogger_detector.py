@@ -290,6 +290,9 @@ def detect_keyloggers():
     
     print('[+] Program completed. Exiting.')
 
+
+    debug(debug_option, 'Kernel detection option: ' + str(kernel_detection_option))
+
     if kernel_detection_option:
             print("[Info] Starting kernel detection")
             run_kernel_detection()
