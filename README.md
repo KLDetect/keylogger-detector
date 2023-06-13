@@ -53,8 +53,9 @@ Running any part if this program in a lightheaded manner may break your system.
 Killing processes and unloading modules should be done with caution. We suggest testing it an a VM.
 If one runs the KLDetect with the kernel module keylogger detection option set, make sure to update the [whitelist.txt](https://github.com/sebaschi/keylogger-detector/blob/main/src/whitelist.txt)
 with the safe kernel modules that you know you have on your system. Altough KLDetect should not unload any kernel modules currently used, better safe than sorry.
+
 # Developers
-Copyright 2023 [Michel Romancuk](https://github.com/SoulKindred), [Sebastian Lenzlinger](https://github.com/sebaschi)
+Copyright © 2023[Michel Romancuk](https://github.com/SoulKindred), [Sebastian Lenzlinger](https://github.com/sebaschi)
 
 
 
