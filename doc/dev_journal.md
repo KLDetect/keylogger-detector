@@ -166,7 +166,7 @@ This is after extensivly refactoring because I was starting to loose oversight o
 ## Wednesday, 7. June 2023, day
 ### Sebastian
 VirtualBox stopped working so after much pain I decided to switch to Boxes. There the install of Fedora 37 went smoothly.
-Then Started testing the userland detector on [simple-key-logger](https://github.com/gsingh93/simple-key-logger/tree/maste), [logkeys](https://github.com/kernc/logkeys).
+Then Started testing the userland detector on [simple-key-logger](https://github.com/gsingh93/simple-key-logger/tree/master), [logkeys](https://github.com/kernc/logkeys).
 [pykeylogger](https://github.com/amoffat/pykeylogger) produced a segmentation fault, after I finaly got it to run. Trying to run [py-keylogger](https://github.com/hiamandeep/py-keylogger), turns out it only runs on X11 it seem (so we'd not catch it anyway).
 [keylog](https://github.com/SCOTPAUL/keylog) was succesfully detected and removed.
 All in all, the main functionality works as intended. Basically now would be the refinement phase to add more options or to have a way to configure the config.json file more easily.
