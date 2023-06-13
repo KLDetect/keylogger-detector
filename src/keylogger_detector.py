@@ -13,7 +13,6 @@ from utils import (
     kill_processes,
     kill_process
     )
-from kernel_detector import run_kernel_detector
 
 # Global variables/CLI options
 
@@ -294,7 +293,6 @@ def detect_keyloggers():
 
     debug(debug_option, 'Kernel detection option: ' + str(kernel_detection_option))
 
-;
 
 if __name__ == '__main__':
     detect_keyloggers()
