@@ -16,7 +16,6 @@ from utils import (
     kill_process
     )
 
-
 # Global variables/CLI options
 
 auto_kill_option = False
@@ -40,10 +39,10 @@ def print_help():
     print('  -v, --verbose\t\t\tVerbose mode. Informative information will be displayed duting execution')
     print('  -a, --auto-kill\t\tAutomatically kill blacklisted processes')
     print('  -s, --safe\t\t\tSafe mode. Asked to confirm before killing a process')
-    print('  -w, --add-white-list\t\t\tActivate prompt to add program names to the whitelist') #For some reason this line gets messed up in display 
-    print('  -b, --add-black-list\t\t\tAutomatically add program names chosen to kill to the blacklist')
+    print('  -w, --add-white-list\t\tActivate prompt to add program names to the whitelist') #For some reason this line gets messed up in display 
+    print('  -b, --add-black-list\t\tAutomatically add program names chosen to kill to the blacklist')
     print('  -d, --debug\t\t\tDebug mode. Print debug statements')
-    print(' -k, --kernel-detection\t\t\tRun the kernel keylogger detector, too. CURRENTLY NOT IMPLEMENTED TO DIRECTLY RUN KERNEL DETECTOR.')
+    print(' -k, --kernel-detection\t\tRun the kernel keylogger detector, too. CURRENTLY NOT IMPLEMENTED TO DIRECTLY RUN KERNEL DETECTOR.')
 
 def set_input_options():
     """
