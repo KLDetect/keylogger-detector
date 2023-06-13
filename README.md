@@ -11,11 +11,11 @@ It can detect processes reading from ```/dev/input/event*``` devices and kernel 
 # Setup
 Download or clone this repository:
 ```
-$ git clone https://github.com/sebaschi/keylogger-detector.git
+git clone https://github.com/sebaschi/keylogger-detector.git
 ```
 Navigate into the src directory:
 ```
-$ cd keylogger-detector/src
+cd keylogger-detector/src
 ```
 Run a keylogger. KLDetect has been tested and shown to work on the following keylogger.
 
@@ -29,23 +29,23 @@ Kernel Module:
 * [spy](https://github.com/jarun/spy)
 
 # Usage 
-The programm must be run as root (sudo).
+KLDetect **must** be run as root (sudo).
 
 Running without options just runs userspace detection:
 ```
-# ./kldetect.py
+./kldetect.py
 ```
 To get a list of options:
 ```
-# ./kldetect.py -h
+./kldetect.py -h
 ```
 To run with kernel module detection:
 ```
-# ./kldetect.py -k
+./kldetect.py -k
 ```
 To run just kernel module detection
 ```
-# ./kernel_detector.py
+./kernel_detector.py
 ```
 
 # Warning
