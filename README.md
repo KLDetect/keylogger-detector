@@ -3,8 +3,8 @@ KLDetect is a keylogger detector for the Linux Desktop.
 It can detect processes reading from ```/dev/input/event*``` devices and kernel modules registered to listen to keyboard events.
 
 # Dependencies
-[Python](https://www.python.org/downloads/)
-[SystemTap](https://sourceware.org/systemtap/wiki)
+* [Python](https://www.python.org/downloads/)
+* [SystemTap](https://sourceware.org/systemtap/wiki)
 
 # Setup
 Download or clone this repository:
@@ -31,19 +31,19 @@ The programm must be run as root (sudo).
 
 Running without options just runs userspace detection:
 ```
-\# ./kldetect.py
+# ./kldetect.py
 ```
 To get a list of options:
 ```
-\# ./kldetect.py -h
+# ./kldetect.py -h
 ```
 To run with kernel module detection:
 ```
-\# ./kldetect.py -k
+# ./kldetect.py -k
 ```
 To run just kernel module detection
 ```
-\# ./kernel_detector.py
+# ./kernel_detector.py
 ```
 # Developers
 Copyright 2023 [Michel Romancuk](https://github.com/SoulKindred), [Sebastian Lenzlinger](https://github.com/sebaschi)
