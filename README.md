@@ -15,12 +15,12 @@ git clone https://github.com/sebaschi/keylogger-detector.git
 Run a keylogger. KLDetect has been tested and shown to work on the following keylogger.
 
 User progams:
-
 * [simple-key-logger](https://github.com/gsingh93/simple-key-logger/tree/master)
 * [logkeys](https://github.com/kernc/logkeys)
 * [keylog](https://github.com/SCOTPAUL/keylog)
-Kernel Module:
 
+
+Kernel Module:
 * [spy](https://github.com/jarun/spy)
 
 # Developers
