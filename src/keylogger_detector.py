@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-
+import subprocess
+import time
+import os
 import sys
 from config import CONFIG_FILE, load_config, save_config
 from utils import (
@@ -105,6 +107,176 @@ def confirm_kill_procces(process_name, times=0):
         return False
     else:
         return confirm_kill_procces(process_name, times+1)
+
+
+def detect_kernel(module):
+        """
+        Start the systemtap-script.
+        load and unload modules twice.
+        load module when finished.
+        
+        Args:
+            module(str): Path + name of the module being tested
+        
+        Returns:
+            String: Path + name of the module that is logging keystrokes  
+        """        
+        if verbose_option:
+            print('[Verbose] Started kernel keylogger detection')
+        process = subprocess.Popen(['stap','funcall_trace.stp', '-T', '10'], stdout=subprocess.PIPE, text=True)
+
+
+        for i in range(2):
+            subprocess.Popen(['sudo','insmod', module])
+            time.sleep(1)
+            print(".", end="")
+            subprocess.Popen(['sudo','rmmod', module])
+            time.sleep(1)
+        subprocess.Popen(['sudo','insmod', module])
+        print(".")
+        out = process.communicate()[0]
+        if verbose_option:
+            print('[Verbose] Started kernel keylogger detection')
+
+        print(out)
+        if out == "[-]":
+       	    return module
+        print("FAILED")
+        return 0
+		
+def getpath(sus_modules):
+	"""
+	Gets the path of a list of modules being tested
+	calls "find_file()" function
+	
+	Args:
+	    List[module(str)] List of all modules being tested
+	    
+	Returns:
+	    List[modules(str)]List of the Path of all modules being tested
+	"""
+	for i in range(len(sus_modules)):
+		sus_modules[i] = find_file(sus_modules[i] + ".ko")
+	return sus_modules
+		
+def find_file(filename):
+    """
+    Searches for a file begining at root
+    
+    Args:
+        filename(str) The filename one is looking for
+        
+    Returns:
+        result_out(str) 'The Path_to_Module/Module_name'
+    """
+    result = []
+    for root, dirs, files in os.walk("/"):
+        if filename in files:
+            file_path = os.path.join(root, filename)
+            result.append(file_path)
+    result_out = result
+    result_out = ''.join(result_out)
+    return result_out
+
+def unload_mod(modules):
+	"""
+	Unloads modules.
+	
+	Args:
+	    module(str) the module that needs to be unloaded. Has to be Path_to_Module/Module_name
+	"""
+	tmp = []
+	for module in modules:
+		result = subprocess.run(['sudo','rmmod', module],capture_output = True, text = True)
+		if result.returncode == 0:
+			if verbose_option:
+				print(f"[Verbose] Unloaded module: {module}")
+		else:
+			if verbose_option:
+				print(f"[Verbose] Failed to unloaded module: {module}")
+				print("[Verbose] " + result.stderr)
+			tmp.append(module)
+	result_out = compare_mods(tmp, modules)
+	if verbose_option:
+		print("[Verbose] ", end="")
+		print(result_out)
+	return result_out
+		
+		
+def tidy_up(entries):
+	"""
+	Takes a txt file and removes everything except the first word of a line
+	
+	Args:
+	    File(.txt) in this usecase a whitelist.txt
+	    
+	Returns:
+	    clean_entries(List[str]) List of only the first wrod from each line
+	"""
+	cleaned_entries = []
+	for entry in entries:
+		modules = entry.split()
+		if modules:
+			first_mod = modules[0]
+			cleaned_entries.append(first_mod)
+	return cleaned_entries
+		
+def compare_mods(A, B):
+	"""
+	Does set-suptraction to.
+	
+	Args:
+	    A(list[str]) List of elements one wants to ignore 
+	    B(list[str]) List of elements that one wants without all elements in A
+	    
+	Returns:
+	    result(list[str] List of elements that are in B but not in A
+	"""
+	setA = set(A)
+	setB = set(B)
+	
+	result = setB - setA
+	
+	return list(result)
+
+
+def get_whitelist(file_path):
+	"""
+	reads a text-file
+	
+	Args:
+	    file_path(str) Path to file one wants to read
+	    
+	Returns:
+	    lines(list[str]) List of each line from a file
+	"""
+	try:
+		with open(file_path, 'r') as file:
+			lines = file.read().splitlines()
+			return lines
+	except IOError:
+		print(f'Error: Failed to load whitelist{file_path}')
+			
+def list_modules(command):
+	"""
+	Calls a command in terminal
+	
+	Args:
+	    command(str) the command one wants to execute
+	    
+	Returns:
+	    result(list[std]) List of each line the command has as an output.
+	"""
+
+	result = subprocess.run(command, shell = True, capture_output=True, text=True)
+	
+	if result.returncode == 0:
+		return result.stdout.strip().split('\n')
+	else:
+		print(f"Failed with error:{result.stderr}")
+		return[]
+
+
 
 def detect_keyloggers():
     """
@@ -288,10 +460,55 @@ def detect_keyloggers():
     if verbose_option:
         print('[Verbose] Config file saved')
     
-    print('[+] Program completed. Exiting.')
+    
 
 
+   
     debug(debug_option, 'Kernel detection option: ' + str(kernel_detection_option))
+    
+    ###########################
+    # 10. If kernel_detection_option is set, run kernel detection
+    ###########################
+    
+    
+    if kernel_detection_option:
+        whitelist = get_whitelist("whitelist.txt")
+        lsmod_output = list_modules("lsmod")
+        sus_modules = compare_mods(whitelist, lsmod_output)
+        sus_modules = tidy_up(sus_modules)
+        sus_modules = unload_mod(sus_modules)
+        time.sleep(1)
+        sus_modules = getpath(sus_modules)
+        suspects = []
+        if verbose_option:
+            print("[Verbose] ", end="")
+            print(sus_modules)
+        if len(sus_modules) == 0 and verbose_option:
+            print("[Verbose] Nothing to do")
+		    
+        for module in sus_modules:
+            if module == '': #if modules have an empty path, they are in root
+        	    break
+            suspects.append(detect_kernel(module))
+            time.sleep(1)
+
+        print("Following modules are logging your keystrokes: ")
+        for i in range(len(suspects)):
+            print( f"[{i}] {suspects[i]}")
+        print("Enter the number of the module you want to remove: ")
+        user_input = input().split()
+        to_remove = []
+        for j in user_input:
+            to_remove = suspects[int(j)]
+            subprocess.Popen(['sudo','rmmod', to_remove])
+        if len(to_remove) < 1:
+            print(f"Removed {to_remove}")
+        
+    print('[+] Program completed. Exiting.')		
+		
+    
+    
+
 
 
 if __name__ == '__main__':
