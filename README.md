@@ -35,7 +35,7 @@ Running without options just runs userspace detection:
 ```
 ./kldetect.py
 ```
-To get a list of options:
+To get a list of command line options:
 ```
 ./kldetect.py -h
 ```
