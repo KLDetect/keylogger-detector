@@ -29,7 +29,8 @@ Kernel Module:
 * [spy](https://github.com/jarun/spy)
 
 # Usage 
-KLDetect **must** be run as root (sudo).
+KLDetect **must** be run as root (sudo). 
+If KLDetect is not run as root the user is reminded to try again with root permissions.
 
 Running without options just runs userspace detection:
 ```
